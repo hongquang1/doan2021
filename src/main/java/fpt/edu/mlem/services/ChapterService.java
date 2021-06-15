@@ -1,6 +1,7 @@
 package fpt.edu.mlem.services;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,5 +26,8 @@ public class ChapterService {
 		chapter.setCourse(generalCourse);
 		chapter.setCreatDate(new Date());
 		return chapterRepository.save(chapter);
+	}
+	public List<Chapter> getByCourse(int courseId){
+		return chapterRepository.getChapterByCourse(courseId);
 	}
 }

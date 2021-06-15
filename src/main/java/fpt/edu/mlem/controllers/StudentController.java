@@ -3,29 +3,35 @@ package fpt.edu.mlem.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import fpt.edu.mlem.entities.Account;
+import fpt.edu.mlem.entities.Lesson;
 import fpt.edu.mlem.entities.ListStudent;
 import fpt.edu.mlem.services.AccountService;
+import fpt.edu.mlem.services.ChapterService;
+import fpt.edu.mlem.services.LessonService;
 import fpt.edu.mlem.services.ListStudentService;
 
-
-
-
-
+@Controller
 public class StudentController {
 
 	@Autowired
 	private AccountService userService;
 	@Autowired
 	private ListStudentService studentService;
-
+	@Autowired
+	private ChapterService chapterService;
 	
-	@RequestMapping("Chapter/{id}")
+	@Autowired
+	private LessonService lessonService;
+	
+	@RequestMapping("Course/{id}")
 	public String LessonPage(@PathVariable(name = "id") int id,@CookieValue(value = "MY_USER", defaultValue = "defaultCookieValue") String userCookie,
 			Model model) {
 		if(userCookie.equals("defaultCookieValue")) {
@@ -41,7 +47,10 @@ public class StudentController {
 			
 			for (ListStudent listStudent : list) {
 				if(listStudent.getCourse().getId()==id) {
-					return "Lesson";
+					model.addAttribute("chapters", chapterService.getByCourse(id));
+//					System.out.println(chapterService.getByCourse(id).get(0).getLessonList().size());
+					return "course_study_view";
+				
 					
 				}
 			}
@@ -50,10 +59,10 @@ public class StudentController {
 		
 		return "redirect:/course_detail_view/"+id;	
 	}
-	
+
 	@RequestMapping("/lesson")
-	public String LessonPage(
-			 int generalCourseId,
+	@ResponseBody
+	public Lesson LessonRespone(
 			 int chapterId,
 			 int lessonId,
 			@CookieValue(value = "MY_USER", defaultValue = "defaultCookieValue") String userCookie,
@@ -69,18 +78,12 @@ public class StudentController {
 			
 			List<ListStudent> list = studentService.GetBotMail(user);
 			
-			for (ListStudent listStudent : list) {
-				if(listStudent.getCourse().getId()==generalCourseId) {
-					//model.addAttribute("lesson", l);
-					System.out.print(listStudent);
-					return "Lesson";
-					
-				}
-			}
+			return lessonService.getById(lessonId) ;
 			
 	
 			
 		}
-		return "redirect:/course_detail_view/"+chapterId;	
+		return null;	
 	}
+	
 }

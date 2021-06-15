@@ -33,4 +33,8 @@ public class LessonService {
 		return lessonRepository.save(lesson);
 		
 	}
+	
+	public Lesson getById(int id) {
+		return lessonRepository.getById(id);
+	}
 }

@@ -65,5 +65,4 @@ public class CourseService {
 		return generalCourseRepository.findById(id).get();
 	}
 
-	
 }

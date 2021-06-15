@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -47,8 +48,6 @@ public class Course {
 	
 	@ManyToOne
 	private Account manager;
-
-
 	
 	public void addRole(Category c) {
 		this.categories.add(c);
